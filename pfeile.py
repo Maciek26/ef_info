@@ -1,4 +1,4 @@
-farbe = [["w","w","w","w","w","w"],["w","w","w","w","w","w"],["w","w","w","w","w","w"],["w","w","w","w","w","w"],["w","w","w","w","w","w"],["w","w","w","w","w","w"]]
+farbe = [["g","g","g","g","g","g"],["g","g","g","g","g","g"],["g","g","g","g","g","g"],["g","g","g","g","g","g"],["g","g","g","g","g","g"],["g","g","g","g","g","g"]]
 richtung = [["4","6","4","4","6","6"],["5","4","3","4","8","8"],["5","1","4","5","7","6"],["1","6","5","6","6","8"],["4","5","2","7","7","5"],["2","2","1","3","3","1"]]
 #Richtungen von der Aufgabe Nr. 1 6x6 Matrix
 
@@ -124,13 +124,9 @@ def pos_left(q,x,y,n,rtn_str=False):
                 return matrixs[q][y][x]
     
 def pos_up_left(q,x,y,n,rtn_str=False):
-    print("received")
     a = 0               
     while a < n:
         a += 1
-        print(x)
-        print(y)
-        print(y<=0)
         if y <= 0 or x <= 0:                       
             return False   
         else:            
@@ -158,32 +154,61 @@ def color(c,x,y):
 def print_in_str(q):
     s = ""
     i = 0
-    for n in range(0,5):
+    for n in range(0,6):
         for j in matrixs[q][n]:
             s += str(j) + " "
             i+= 1
         s += "\n"
     return s
         
+            
+def Regel2():
+    black_seen = 0
+    n = 0
+    print("begann to lock for black")
+    for y in range(0, matrix_grösse + 1):
+        black_seen = 0
+        for x in range(0, matrix_grösse + 1):
+            n = 0
+            print(x,y)
+            black_seen = 0
+            richtung = int(matrixs[1][y][x])
+            while n < matrix_grösse + 1:                                       #In dieser Schleife gehen wir in eine Richtung und zählen wie viele Schwarze Pfeile wir sehen
+                n += 1                                                         #Zählvariable um in die Richtung n-mal zu gehen
+                if movingUp_Down[richtung - 1](0,x,y,n) == "b":
+                    black_seen += 1 
+                elif  movingUp_Down[richtung - 1](1,x,y,n) == False:
+                    k = n - 1
+                    n = 100
+                    if black_seen == 1:
+                        
+                        while k > 0:
+                            print(k)
+                            toBeColored = movingUp_Down[richtung - 1](0,x,y,k,True)
+                            if movingUp_Down[richtung - 1](0,x,y,k) == "g":
+                                color("w", toBeColored[0], toBeColored[1])
+                             
+                           
 
+                            k -= 1
+                        print("only one black")
 
 def Regel1():
     currentTry = True
     for y in range(0, matrix_grösse+1):
         for x in range(0, matrix_grösse+1):
             richtung = int(matrixs[1][y][x])
-            print(x,y)
-            print(richtung)
+         
             if movingUp_Down[richtung - 1](0,x,y,2) == False:
                 toBeColored = movingUp_Down[richtung - 1](0,x,y,1,True)
-                print(toBeColored[0])
+                #print(toBeColored[0], toBeColored[1], "diese wird angemalt")
 
-                color("b", toBeColored[0],toBeColored[1])
-                print(f"Der sieht nh schwarzen von {x} / {y}")
+                color("b", toBeColored[0], toBeColored[1])
+                #print(f"Der sieht nh schwarzen von {x} / {y}")
+    Regel2()
             
-            matrixs[1][y][x]
 
-
+                    
 
 Regel1()
 #print(str(farbe[0][0]))
