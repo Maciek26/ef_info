@@ -31,9 +31,6 @@ def pos_up(q,x,y,n,rtn_str=False):
             else:
                 return matrixs[q][y][x]         #Falls nicht dann wird die Farbe oder Richtung zurück gegeben
                                                 #Je nachdem ob der User für q 0 oder 1 angegeben hat; 0 -> Farbe ; 1 -> Richtung
-                    
-        
-    
 
 def pos_up_right(q,x,y,n,rtn_str=False):
     a = 0               
@@ -64,8 +61,6 @@ def pos_right(q,x,y,n,rtn_str=False):
             else:
                 return matrixs[q][y][x]
 
-
-    
 def pos_down_right(q,x,y,n,rtn_str=False):
     a = 0               
     while a < n:
@@ -161,15 +156,17 @@ def print_in_str(q):            # Wir für das Debugen benutzt um die Matrizen F
     return s
 
 def Regel3():
+    grey_count = 0
     w = 0
     test = 0
     while w < 2:
         w += 1
-        print("regel3 begonnen")
         grey_seen = 0
         black_seen = 0
         for y in range(0, matrix_grösse + 1):
             for x in range(0, matrix_grösse + 1):
+                if matrixs[0][y][x] == "g":
+                    grey_count += 1
                 n = 0
                 black_seen = 0
                 grey_seen = []
@@ -181,37 +178,24 @@ def Regel3():
                     elif movingUp_Down[richtung - 1](0,x,y,n) == "g":
                         grey_seen.append(movingUp_Down[richtung - 1](0,x,y,n, True))
                     elif  movingUp_Down[richtung - 1](1,x,y,n) == False:             #Falls False dann ist er am Rand angekommen
-                    
-                        
                         if len(grey_seen) == 1 and black_seen == 0:                     #Falls ein Pfeil nur einen Unbekannten sieht und keinen Schwarzen
                             color("b", grey_seen[0][0], grey_seen[0][1])                #dann wird dieser Unbekannte Pfeil schwarz
-                        
                         elif len(grey_seen) == 1 and black_seen == 1:
-                            print("wird weiss eingefärbt")
                             color("w", grey_seen[0][0],grey_seen[0][1])
-        
-        print("Regel 3 Durchlauf", n)
-        print(print_in_str(0))
-    
-
-            
+    if grey_count == 0:
+        return
+    else:
+        Regel2()
+             
 def Regel2():
-    print("begann to lock for black")
     for y in range(0, matrix_grösse + 1):
         black_seen = 0
         for x in range(0, matrix_grösse + 1):
             #debug1 = input()
-            print(print_in_str(0))
-
-            print(x,y)
             n = 0
             black_seen = 0
             richtung = int(matrixs[1][y][x])
-            while n < matrix_grösse + 1:                                       #In dieser Schleife gehen wir in eine Richtung und zählen wie viele Schwarze Pfeile wir sehen    
-                
-                    
-                
-                
+            while n < matrix_grösse + 1:                                       #In dieser Schleife gehen wir in eine Richtung und zählen wie viele Schwarze Pfeile wir sehen                
                 n += 1                                                           #Zählvariable um in die Richtung n-mal zu gehen    
                 if movingUp_Down[richtung - 1](0,x,y,n) == "b":
                     black_seen += 1 
@@ -224,9 +208,6 @@ def Regel2():
                             if movingUp_Down[richtung - 1](0,x,y,k) == "g":
                                 color("w", toBeColored[0], toBeColored[1])
                             k -= 1
-    print("Regel 2")
-    print(print_in_str(0))
-                        
     Regel3()
 
 def Regel1():
@@ -234,26 +215,17 @@ def Regel1():
     for y in range(0, matrix_grösse+1):
         for x in range(0, matrix_grösse+1):
             richtung = int(matrixs[1][y][x])
-         
             if movingUp_Down[richtung - 1](0,x,y,2) == False:
                 toBeColored = movingUp_Down[richtung - 1](0,x,y,1,True)
                 #print(toBeColored[0], toBeColored[1], "diese wird angemalt")
 
                 color("b", toBeColored[0], toBeColored[1])
                 #print(f"Der sieht nh schwarzen von {x} / {y}")$
-    print("Regel 1")
-    print(print_in_str(0))
     Regel2()
             
-
-
-
-
 matrixs_print = [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]
 
-
 def arrow_print_setup(x,y):
-
     if matrixs[0][x][y] == "b":
         if matrixs[1][x][y] == "1":
             matrixs_print[x][y] = "↑"
@@ -290,10 +262,9 @@ def arrow_print_setup(x,y):
         if matrixs[1][x][y] == "8":
             matrixs_print[x][y] = "⇖"
         
-        
     return matrixs_print             
 
-def printm(m):
+def print_matrix(m):
     s = ""
     for i in range(0,6):
         for j in m[i]:
@@ -302,27 +273,12 @@ def printm(m):
     print(s)
 
 Regel1()
-Regel2()
-Regel2()
-#print(str(farbe[0][0]))
-print("\u21E8")
-def test():
+
+def transformIntoArrows():
     for i in range(0,6):
         for j in range(0,6):
             arrow_print_setup(j,i)
 
-test()           
+transformIntoArrows()           
 
-printm(matrixs_print)
-
-
-
-
-
-
-
-
-
-
-
-
+print_matrix(matrixs_print)
