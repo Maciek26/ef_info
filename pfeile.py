@@ -239,7 +239,6 @@ Regel1()                                                #Mit dem Aufrufen der "R
 print_matrix(matrixs_print)                             #Sobald das Rätsel fertig gelöst ist, rufen wir "print_matrix" auf um die Matrix auch visuelle vorzeigen zu können.
 
 
-
 #------------Alles ab hier ist alt und wird nicht mehr benutzt--------------------
 #-------------------für den Notfall ist es jedoch da------------------------------
 '''
